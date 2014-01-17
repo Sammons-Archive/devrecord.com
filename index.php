@@ -1,1 +1,1 @@
-<?php header("Location: 2");?>
+<?php header("Location: list");?>

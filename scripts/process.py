@@ -33,14 +33,13 @@ site_map = '<?xml version="1.0" encoding="UTF-8"?>\n'+ \
       'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'+ \
             'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n' + \
             '<url><loc>http://devrecord.com/</loc><url>'
-
 def addToSitemap(filepath):
 	#print filepath
 	global site_map
 	site_map += '<url>\n'
-	site_map += '\t<loc>\thttp://devrecord.com/'+filepath+'/</loc>\n'
+	site_map += '\t<loc>\thttp://devrecord.com'+filepath[filepath.rfind('/'):]+'/</loc>\n'
 	site_map += '</url>\n'
-	
+
 def processContent(entry):
 	#create page
 	page= codecs.open('base.html','r','utf-8').read()
@@ -69,6 +68,7 @@ content = open(content_directory+"/pages.xml").read()
 soup = BeautifulSoup(content)
 for entry in soup.findAll('entry'):
 	processContent(entry)
+
 
 
 for thing in os.listdir(parent_directory):

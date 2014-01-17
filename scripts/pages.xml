@@ -1,5 +1,37 @@
 <entry>
 	<title>
+	Devrecord
+	</title>
+	<previous_page>
+		http://en.wikipedia.org/wiki/Big_Bang
+	</previous_page>
+	<url>
+		//devrecord.com/list
+	</url>
+	<number>
+		list
+	</number>
+	<content>
+		<ul>
+			<li><a href="//devrecord.com/1">one blog at a time</a></li>
+			<li><a href="//devrecord.com/2">starslam</a></li>
+			<li><a href="//devrecord.com/3">An obligation to collaboration</a></li>
+			<li><a href="//devrecord.com/4">Sympathy for my fingers</a></li>
+			<li><a href="//devrecord.com/5">A small thought about time</a></li>
+		</ul>
+	</content>
+	<arrow_quip>
+		before the beginning?
+	</arrow_quip>
+	<image_quip>
+		cosmic, isn't it?
+	</image_quip>
+	<title_quip>
+		This page stands outside of time and watches
+	</title_quip>
+</entry>
+<entry>
+	<title>
 	one blog at a time
 	</title>
 	<previous_page>
@@ -231,7 +263,7 @@
 		<p>I had discussed with one of my co-workers during my time as an intern at <a href="http://www.admcrs.com/">ADM CRS</a> the idea of modifying existing enterprise editors to sync them into a collaborative experience, and floobits is a better version of that idea, but just for programmers.</p>
 		<p>It touts a clean online editor for any users who would like to watch/help with your coding, as well as plugins for <a href="http://www.sublimetext.com/">Sublime Text</a>, <a href="http://www.gnu.org/software/emacs/">Emacs</a>, and <a href="http://www.vim.org/">Vim</a> -- currently a plugin is in progress for <a href="http://www.jetbrains.com/idea/">IntelliJ</a>.</p>
 		<p>I was able to simultaneously hook up emacs, sublime, and the online editor and watch myself code live - so let me tell you it works beautifully. Although there is some wierdness with the minibuffer in emacs - I am sure a better elisp wizard could fix it instantly.</p>
-		<p>Now I can work with people at the drop of a hat with my custom dvorak oriented keybindings on sublime! Enter <a href="voip">voIP</a> and I think we are approaching an excellent solution - Enter Chrome Remote Desktop, and I think I am finally ready</p>
+		<p>Now I can work with people at the drop of a hat with my custom dvorak oriented keybindings on sublime! Enter <a href="//devrecord.com/voip">voIP</a> and I think we are approaching an excellent solution - Enter Chrome Remote Desktop, and I think I am finally ready</p>
 		<p> I will probably be back with a better, less hype-ey, blog when I finally have the experience I am looking for.</p>
 	</content>
 	<arrow_quip>
@@ -259,7 +291,7 @@
 	</url>
 	<content>
 		<p>I don't have RSI, and I don't want it. That's why I spend time trying my editors and messing with keyboard layouts - and programming for my fingers.</p>
-		<p>Every good editor allows for significant customizations. It is important to be able to minimize the barrier between your brain and your harddrive, and customizations help re-align your editor with your brain waves. A good side-effect is that your hands won't hurt like hell either. As a student I am still a fledgeling programmer and I am trying to create my own flexible dwelling where I can be awesome and still <a href="3">work with other people</a>.</p>
+		<p>Every good editor allows for significant customizations. It is important to be able to minimize the barrier between your brain and your harddrive, and customizations help re-align your editor with your brain waves. A good side-effect is that your hands won't hurt like hell either. As a student I am still a fledgeling programmer and I am trying to create my own flexible dwelling where I can be awesome and still <a href="//devrecord.com/3">work with other people</a>.</p>
 		<p>I currently use sublime text, in a sort of Emacs-ey set up. Hitting ctrl on my keyboard (which is the caps lock button) turns my right hand into a navigator - subsequently tapping "space", or "'" will change the behavior of those same keys. Effectively I don't use most of the keyboard for hotkeys, but use the easily reachable keys (on a Dvorak layout) with my right hand for a wide variety of things ranging from cut-deleting a line, to navigating a awat or to EOL or BOL, to select-editing all instances of the current work, to popping up a terminal, to building... and <a href="https://github.com/Sammons/subl-config">more</a>.</p>
 		<p>Maybe I'm wrong and we should all use Eclipse with the base configuration, but I just don't think so. Besides it is so nice to not have to use home, end, arrow keys, and the mouse nearly as much!.</p>
 	</content>
@@ -305,7 +337,7 @@
 		please don't click me.
 	</arrow_quip>
 	<image_quip>
-		`"-- I am innocent
+		=O
 	</image_quip>
 	<title_quip>
 		because time is money
