@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+		<html>
+		<head>
+			<title>Devrecord</title>
+			<meta name="google-site-verification" content="Qg5JxJZMQ7UKfJ_851jUbnqQiegmsOBQKFsT7BaROio" />
+			<meta name="image" content="http://devrecord.com/logo_new.png">
+			<meta name="author" content="https://plus.google.com/+BenSammons?rel=author"/>
+			<link rel="alternate" href="//devrecord.com/feed/atom.xml" title="Devrecord Feed" type="application/atom+xml" />
+			<link rel="index" href="//devrecord.com/list"/>
+			<link rel="prev" href="//devrecord.com/list "/>
+			<link rel="stylesheet" type="text/css" href="//devrecord.com/style.css">
+			<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+			<script src="lib/codemirror.js"></script>
+			<script src="dist/firepad.js"></script>
+			<link rel="stylesheet" href="dist/firepad.css" />
+			<link rel="stylesheet" href="dist/codemirror.css" />
+		</head>
+		<body>
+
+		<div id="entry">
+			<a id="previous"  href="//devrecord.com/list" title="listing">«</a>
+			<div id="title"><div id="logo"><img src="//devrecord.com/logo_new.png" width=200 title="..."></div><a href="//devrecord.com/emacs" title="communication is indeed key">Voice Over IP (voip)</a></div>
+			<div id="content">
+			 <div id="firepad"></div>
+			  <script>
+			    //// Initialize Firebase.
+			    //var firepadRef = getExampleRef();
+			    // TODO: Replace above line with:
+			     var firepadRef = new Firebase('<devrecord/pad>');
+
+			    //// Create CodeMirror (with lineWrapping on).
+			    var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
+
+			    //// Create Firepad (with rich text toolbar and shortcuts enabled).
+			    var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
+			        { richTextToolbar: true, richTextShortcuts: true });
+
+			    //// Initialize contents.
+			    firepad.on('ready', function() {
+			      if (firepad.isHistoryEmpty()) {
+			        firepad.setHtml(
+			            '<span style="font-size: 24px;">Rich-text editing with <span style="color: red">Firepad!</span></span><br/>\n' +
+			            '<br/>' +
+			            '<div style="font-size: 18px">' +
+			            'Supports:<br/>' +
+			            '<ul>' +
+			              '<li>Different ' +
+			                '<span style="font-family: impact">fonts,</span>' +
+			                '<span style="font-size: 24px;"> sizes, </span>' +
+			                '<span style="color: blue">and colors.</span>' +
+			              '</li>' +
+			              '<li>' +
+			                '<b>Bold, </b>' +
+			                '<i>italic, </i>' +
+			                '<u>and underline.</u>' +
+			              '</li>' +
+			              '<li>Lists' +
+			                '<ol>' +
+			                  '<li>One</li>' +
+			                  '<li>Two</li>' +
+			                '</ol>' +
+			              '</li>' +
+			              '<li>Undo / redo</li>' +
+			              '<li>Cursor / selection synchronization.</li>' +
+			              '<li>And it\'s all fully collaborative!</li>' +
+			            '</ul>' +
+			            '</div>');
+			      }
+			    });
+			  </script>
+			</div>
+			<footer>Page By <a itemprop="author" itemtype="http://schema.org/Person" href="https://plus.google.com/+BenSammons?rel=author">Ben Sammons 2014</a>, derived from Phil Hagelberg's <a href="//technomancy.us">Technomancy</a> design.<br>  
+				Looking for more?
+				[	<a href="//devrecord.com/list"> All</a> | 
+					<a href="//sammonsben.com/resume.pdf">Résumé</a> |
+					<a href="http://github.com/Sammons">Projects</a>
+				]</footer>
+		</div>
+		</body>
+		
+		</html>

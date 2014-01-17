@@ -1,0 +1,313 @@
+<entry>
+	<title>
+	one blog at a time
+	</title>
+	<previous_page>
+		//devrecord.com/list
+	</previous_page>
+	<url>
+		//devrecord.com/1
+	</url>
+	<number>
+		1
+	</number>
+	<content>
+		<p>I have been wondering for some time now why it is I struggle so much with actually using my blog. I think I finally have the reason, but first let me tell you the summarized sob story.</p><p>I did what I had been advised to do: I looked at blogs online until I found ones I liked, and then went about making something similar, but no matter what I did I didn't <i>like</i> my own blog! and I don't feel the inspiration to use a webpage if doing so is devoid of any satisfaction. I had tried blogger templates, wordpress templates, and a few half cocked projects of my own (before I even knew javascript).</p><p>Enter the revisitation. I think I finally found the solution. Most blogs flaunt past blogs in an attempt to make the reader read them too. This makes good sense in terms of getting people to go read your blogs and in a general use-sense. The problem though, is that I have a severe dislike for my own writing for completely irrational reasons. Maybe if I rewrote the blog 12 times (I just reworded this sentence 3 times) I would get over it? That sounds painful too. But stumbling onto Phil Hagelberg's <a href="//technomancy.us">Technomancy</a> I suddenly realized what it was. I want to write something, not worry about it, and not see it. I do want other people to see it, though really I care more about getting the "moment" out of my system and into a record than about people reading what I write. So just put a footnote and minimal anything into displaying the way around, and focus entirely on just <i>one blog at a time</i>.
+	</content>
+	<arrow_quip>
+		this thing takes you somewhere left of here
+	</arrow_quip>
+	<image_quip>
+		Phil's blog may be awesome, and probably generally superior, but I doubt he hides comments in his site image =)
+	</image_quip>
+	<title_quip>
+		sort of like one step at a time, except much more focused, and with a keyboard required
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	starslam
+	</title>
+	<previous_page>
+		//devrecord.com/1
+	</previous_page>
+	<number>
+		2
+	</number>
+	<url>
+		//devrecord.com/2
+	</url>
+	<content>
+		<p>You probably have no idea what I'm even thinking at the word 'starslam', so I will start there.</p>
+			<p>Starslam was an experiment in <a href="http://nodejs.org/">Node.js</a>, <a href="https://developer.mozilla.org/en-US/docs/WebSockets">websockets</a>, <a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">html5 canvases</a>, and last but not least <a href="https://aws.amazon.com/">Amazon Web Services</a>. It also happened to be a game. I wasn't exactly sure about what I was creating when I got started - but the end result was an idea. That idea was of completely synchronous, unhackable games, built on html5 canvas'. The state (collision and physics) would be handled by the server, and the client would simply report the user inputs.</p>
+
+			<p>But this blog is about what I learned in finding that idea. In the order I learned it-ish.</p>
+			<p> I knew I was going to start with the canvas - because the canvas is cool. I also sort of started with my webserver because for some sadistic reason I enjoy modifying local files and checking how they run/look as served by the server (instead of simply dropping them into a browser). This wasn't such a great approach I learned later, but it did work out since there really weren't many pages needed for Starslam. Lastly I worked out authentication and user state, as well as game mechanics - and I was a real idiot to wait on these.
+			</p>
+			<p>So. <a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">The Html5 Canvas</a>. The canvas has been around for quite some time - longer than I have been a developer (currently in 2014), and yet so few people seem to dive into them - probably since they don't make a huge deal in corporate biz logic. Fewer still seem to understand much about their basic 2D graphics, although there are some useful scraps in most google search resources. For me I found I wasn't all that interested in a lot of the functionality, as I could do what I wanted with some very simple canvas tools.</p>
+			<p>The trick for me was remembering the <a href="http://en.wikipedia.org/wiki/Identity_matrix">identity matrix</a> and the <a href="en.wikipedia.org/wiki/Rotation_matrix">rotation matrix</a>. In the world of canvas, you have the power to transform your sense of the world relative to a 3x3 matrix. This is much like turning your sense of the world upside-down -or any other angle- and continuing working, but relative to what you now see. You might wonder why a 3x3 matrix is involved in a 2 dimensional canvas, and you aren't crazy. The reason is that a 2D canvas is a subset of 3D (naturally). In the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#setTransform()"> api's setTransform function</a>, the bottom row of the 3x3 matrix is ignored, and the rightmost column of the 3x3 matrix acts as an offset for the context:
+			<br>
+<pre>
+
+	1 0 1    
+	0 1 1 -> identity matrix with offset X+1 and Y+1, 
+	0 0 1    setTransform(1,0,0,1,1,1)
+
+</pre>
+<pre>
+
+	a b e
+	c d f -> making sense of the above : setTransform(a,b,c,d,e,f) - this guy  
+	0 0 1    ignores the bottom row
+
+</pre>
+			<br>
+			Then, I would draw something onto a second canvas using <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#beginPath()">beginPath</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#closePath()">closePath</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#stroke()">stroke</a>, and <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#fill()">fill</a>, subsequently using <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#drawImage()">drawImage</a> to draw that image onto the display canvas. I found out it was easy conceptually and <a href="http://www.kevs3d.co.uk/dev/asteroidsbench/" title="I admit people hate on drawImage some, but I found it perfectly capable">not so bad</a> speedwise. The source is <a href="https://github.com/Sammons/Angle-Engine">on github</a> if you want to take a closer look.
+			</p>
+			<p>
+				Node.js routing & state management. I used two servers to handle everything - 1 for the static html, and 1 for the websockets and game state. There wasn't anything too special about what I was doing here, but it was quite a learning experience in how not to organize things. I did not encapsulate functionality well, and I did not plan out my states very well either, so the result was buggy at best. I don't regret doing it the way I did though because I think everyone needs to run into their own messes every now and then. I also used <a href="http://passportjs.org/guide/oauth/">oAuth</a> without learning how it worked first.... The moral of the story here is that a lack of planning leads to time-waste in debugging and <a href="http://en.wikipedia.org/wiki/Mental_confusion" title="note the uncertainty part">confusion</a> later.
+			</p>
+			<p>
+				Game stuff. I never really programmed physics, but I did program movement controllers and collision events. I handled collision on a tick by tick basis, where a 500x500 matrix held each pixel in the game, and an object owned pixels on the grid or attempted to take them which would consequently result in a collision when a pixel was taken. This was slow and ugly, but it worked. Then the user events came to be put into a queue which eventually affected velocity/accel/firing properties of the user. This was processed each game-tick (approx 40ms interval). 
+			</p>
+			<p>I wish I could have kept this on AWS eternally, but alas, that costs money. I also learned a lot about domain name pointing, working behind a load balancer on aws, and getting an SSL cert. Each of these deserves their own blogs, and needs explaining I can't find a link for.</p>
+			<p>I hope this blog was useful. If you found a mistake please <a href="mailto:bsammnz@gmail.com">email me</a>, also go for it if you would like something added.</p>
+	</content>
+	<arrow_quip>
+		to 1
+	</arrow_quip>
+	<image_quip>
+		Oooh the universe
+	</image_quip>
+	<title_quip>
+		this is not a star, and it has not been slammed, although the result would be remarkable
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	emacs
+	</title>
+	<previous_page>
+		//devrecord.com/list
+	</previous_page>
+	<number>
+		emacs
+	</number>
+	<url>
+		//devrecord.com/emacs
+	</url>
+	<content>
+	<p>I really wish I was cool enough to use Emacs, but the unfortunate truth is that I'm not quite crazy enough yet.</p>
+			<p>This page is about building the Emacs environment that will finally allow me to crawl out of the realm of modern text-editors and into the world of OS-like IDE thing that makes me superpowered.
+			</p>
+			<p>But why use emacs?
+
+				<ul>
+					<li>easily extendable</li>
+					<li>massive knowledge base</li>
+					<li>lots of bells and whistles out of the box</li>
+					<li>very educational to use</li>
+					<li><i>cooool</i></li>
+					<li>get out of using the mouse for everything</li>
+					<li>i don't like VIM's command mode</li>
+				</ul>
+			</p>
+			<p>
+				More reasons to come....
+			</p>
+			<p>
+				So what do I need from Emacs before I can happily switch?
+			</p>
+			<ul>
+				<li>command over web browsing</li>
+				<li>intellisense/code suggestion - and not just the most likely, I need multiple suggestions</li>
+				<li>build hotkey, uses a file in the project to decide what to do</li>
+				<li>line-by-line debugging in languages it makes sense for (C, C++, PHP, Javascript)</li>
+				<li>live shared file editing (floobits?)</li>
+				<li>language based configuration - something sublime text does amazingly well</li>
+				<li>as many command prompts as I like, easily</li>
+				<li>potentially a navigation mode (I know that mode idea is dangerous, but still)</li>
+				<li>ability to view images/pdfs</li>
+				<li>everything</li>
+			</ul>
+			<p>Where am i looking to learn?</p>
+			<ul>
+				<li>Goooogle</li>
+				<li>The help manual</li>
+			</ul>
+			<p>Accumulations</p>
+			<ul>
+				<li><pre>C-x u</pre> <strong>undo</strong> (to redo, must undo undo)</li>
+				<li><pre>C-x C-b</pre><strong>view buffers</strong></li>
+				<li><pre>C-h w</pre> <strong>view command help</strong></li>
+				<li><pre>C-h b</pre> <strong>view applicable commands</strong></li>
+				<li><pre>C-x k</pre> <strong>kill buffer</strong></li>
+				<li><pre>C-x h</pre> <strong>select all</strong></li>
+				<li><pre>M-x eshell</pre></li>
+				<li><pre>M-x term</pre></li>
+				<li><pre>M-x shell</pre></li>
+				<li><pre>M-! cmd Ret</pre></li>
+				<li><pre>M-|</pre><strong>pipe selected region into command, opt replace region with output</strong></li>
+				<li><pre>ESC x recover-file</pre></li>
+				<li><pre>ESC x revert-buffer</pre></li>
+                                <li><pre>
+			</ul>
+	</content>
+	<arrow_quip>
+		ctrl+b
+	</arrow_quip>
+	<image_quip>
+		emacs wishes it looked like this
+	</image_quip>
+	<title_quip>
+		extensible machine AI controlled savior
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	voip
+	</title>
+	<previous_page>
+		//devrecord.com/list
+	</previous_page>
+	<number>
+		voip
+	</number>
+	<url>
+		//devrecord.com/voip
+	</url>
+	<content>
+			<p>server data:</p>
+			<pre>	ip:208.100.14.164 		port:3859</pre>
+			<pre> 	guests have limited rights, if you want more <a href="mailto:bsammnz@gmail.com">email me</a></pre>
+			<p>
+				For Linux I use <a href="http://www.mangler.org/">mangler</a> <br>
+				For OS-X or Windows just use <a href="http://www.ventrilo.com/download.php">ventrilo</a>
+				<br><br>
+				happy social coding!
+			</p>
+			<p>
+				Also take a look at shared live programming options:
+			</p>
+			<ul>
+				<li><a href="https://floobits.com/">floobits</a>--broken on ubuntu, working on fix</li>
+				<li><a href="https://c9.io/">cloud9</a></li>
+				<li><a href="http://collabedit.com/">collabedit</a></li>
+				<li><a href="http://www.firepad.io/">firepad</a></li>
+				<li><a href="https://squadedit.com/">squadedit</a></li>
+				<li><a href="https://www.google.com/search?q=shared+coding+editor&oq=shared+coding&aqs=chrome.0.69i59j69i57j0l2.2271j0j9&client=ubuntu-browser&sourceid=chrome&ie=UTF-8">and more...</a></li>
+			</ul>
+	</content>
+	<arrow_quip>
+		&lt;----
+	</arrow_quip>
+	<image_quip>
+		to be seen and not heard
+	</image_quip>
+	<title_quip>
+		voice over internet protocol
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	An obligation to collaboration
+	</title>
+	<previous_page>
+		//devrecord.com/2
+	</previous_page>
+	<number>
+		3
+	</number>
+	<url>
+		//devrecord.com/3
+	</url>
+	<content>
+		<p>I don't know about you, but I choke a bit when people say 'work remotely'</p>
+		<p>It's a simple matter of not being able to see what on Earth the other person is doing 50% of the time, and being unable to show/tell/sign/interpretive dance/communicate what you are trying to say. This inability is distracting - to say the least.</p>
+		<p>Yet, at the same time I keep hearing of wizards off elsewhere who manage to work <i>only</i> remotely!</p>
+		<p>I know it can be done, and I seriously slobber over the idea of working with anybody, anytime, anywhere, and creating pair-code. So I continue trying to find a way that will improve the experience.</p>
+		<h4>The latest solution</h4>
+		<p> <a href="https://floobits.com">floobits</a> : a magical solution - my cousin ran into it while we were discussing working on <a href="https://github.com/Sammons/GameSync">GameSync</a></p>
+		<p>I had discussed with one of my co-workers during my time as an intern at <a href="http://www.admcrs.com/">ADM CRS</a> the idea of modifying existing enterprise editors to sync them into a collaborative experience, and floobits is a better version of that idea, but just for programmers.</p>
+		<p>It touts a clean online editor for any users who would like to watch/help with your coding, as well as plugins for <a href="http://www.sublimetext.com/">Sublime Text</a>, <a href="http://www.gnu.org/software/emacs/">Emacs</a>, and <a href="http://www.vim.org/">Vim</a> -- currently a plugin is in progress for <a href="http://www.jetbrains.com/idea/">IntelliJ</a>.</p>
+		<p>I was able to simultaneously hook up emacs, sublime, and the online editor and watch myself code live - so let me tell you it works beautifully. Although there is some wierdness with the minibuffer in emacs - I am sure a better elisp wizard could fix it instantly.</p>
+		<p>Now I can work with people at the drop of a hat with my custom dvorak oriented keybindings on sublime! Enter <a href="voip">voIP</a> and I think we are approaching an excellent solution - Enter Chrome Remote Desktop, and I think I am finally ready</p>
+		<p> I will probably be back with a better, less hype-ey, blog when I finally have the experience I am looking for.</p>
+	</content>
+	<arrow_quip>
+		two
+	</arrow_quip>
+	<image_quip>
+		this picture collaborates with the favicon
+	</image_quip>
+	<title_quip>
+		a 2014 thing
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	Sympathy for my fingers
+	</title>
+	<previous_page>
+		//devrecord.com/3
+	</previous_page>
+	<number>
+		4
+	</number>
+	<url>
+		//devrecord.com/4
+	</url>
+	<content>
+		<p>I don't have RSI, and I don't want it. That's why I spend time trying my editors and messing with keyboard layouts - and programming for my fingers.</p>
+		<p>Every good editor allows for significant customizations. It is important to be able to minimize the barrier between your brain and your harddrive, and customizations help re-align your editor with your brain waves. A good side-effect is that your hands won't hurt like hell either. As a student I am still a fledgeling programmer and I am trying to create my own flexible dwelling where I can be awesome and still <a href="3">work with other people</a>.</p>
+		<p>I currently use sublime text, in a sort of Emacs-ey set up. Hitting ctrl on my keyboard (which is the caps lock button) turns my right hand into a navigator - subsequently tapping "space", or "'" will change the behavior of those same keys. Effectively I don't use most of the keyboard for hotkeys, but use the easily reachable keys (on a Dvorak layout) with my right hand for a wide variety of things ranging from cut-deleting a line, to navigating a awat or to EOL or BOL, to select-editing all instances of the current work, to popping up a terminal, to building... and <a href="https://github.com/Sammons/subl-config">more</a>.</p>
+		<p>Maybe I'm wrong and we should all use Eclipse with the base configuration, but I just don't think so. Besides it is so nice to not have to use home, end, arrow keys, and the mouse nearly as much!.</p>
+	</content>
+	<arrow_quip>
+		&lt;...
+	</arrow_quip>
+	<image_quip>
+		...
+	</image_quip>
+	<title_quip>
+		customize your everything
+	</title_quip>
+</entry>
+<entry>
+	<title>
+	A small thought about time
+	</title>
+	<previous_page>
+		//devrecord.com/4
+	</previous_page>
+	<number>
+		5
+	</number>
+	<url>
+		//devrecord.com/5
+	</url>
+	<content>
+		<p>"How long do you think you will need?"</p>
+		<p>This question plagues me. I am a fairly inexperienced developer, and have few finished products. I
+		know what generally goes into making an app function securely, and find the tasks in creating it
+		manageable - but I have no idea how long it will take me. I am really quickly learning that the time
+		it takes is <i>much</i> more than what I had anticipated. I also find that no matter how many designing and planning meetings there are before development proceeds, each point must be beat to death at every angle before new doubts stop interfering with developmental design and implementation.
+		</p>
+		<p>The extra kicker is that things like testing state and security are difficult to factor in. If it takes me half an hour to make a generic form, another half to scrape the data in js (let's say I'm slow, or	very careful that day). Then it could take me an indefinite amount of time later in ensuring that the		data all hooks in and can be manipulated either way. Right now any ruby-ist would be saying to stop doing what I'm doing and use their crap - but really I can't. Why not? My boss said so.
+		</p>
+		<p>The realistic state of things in many enterprise tech groups is that there are tremendous arbitrary constraints on the type of software used, and the manner in which it is used. The reasons behind the constraints usually aren't insane, and you just get to live with them. So how do I, as an inexperienced developer unable to use flashy new tools, both get things done fast and well; and estimate the time it will take me to do so?</p>
+		<p>
+		Well, in the mean time I will just do my best, be wrong, and hope management has mercy on me.
+		</p>
+
+	</content>
+	<arrow_quip>
+		please don't click me.
+	</arrow_quip>
+	<image_quip>
+		`"-- I am innocent
+	</image_quip>
+	<title_quip>
+		because time is money
+	</title_quip>
+</entry>

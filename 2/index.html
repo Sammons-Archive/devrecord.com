@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+		<html>
+		<head>
+			<title>Devrecord</title>
+			<meta name="google-site-verification" content="Qg5JxJZMQ7UKfJ_851jUbnqQiegmsOBQKFsT7BaROio" />
+			<meta name="image" content="http://devrecord.com/logo_new.png">
+			<meta name="author" content="https://plus.google.com/+BenSammons?rel=author"/>
+			<meta name="image" content="http://devrecord.com/logo_new.png">
+			<link rel="alternate" href="//devrecord.com/feed/atom.xml" title="Devrecord Feed" type="application/atom+xml" />
+			<link rel="index" href="//devrecord.com/list"/>
+			<link rel="prev" href="//devrecord.com/1 "/>
+			<link rel="stylesheet" type="text/css" href="//devrecord.com/style.css">
+		</head>
+		<body>
+
+		<div id="entry">
+			<a id="previous"  href="//devrecord.com/1" title="to 1">«</a>
+			<div id="title"><div id="logo"><img src="//devrecord.com/logo_new.png" width=200 title="Oooh the universe"></div><a href="//devrecord.com/2" title="this is not a star, and it has not been slammed, although the result would be remarkable">starslam</a></div>
+			<div id="content">
+			<content>
+<p>
+ You probably have no idea what I'm even thinking at the word 'starslam', so I will start there.
+</p>
+<p>
+ Starslam was an experiment in
+ <a href="http://nodejs.org/">
+  Node.js
+ </a>
+ ,
+ <a href="https://developer.mozilla.org/en-US/docs/WebSockets">
+  websockets
+ </a>
+ ,
+ <a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">
+  html5 canvases
+ </a>
+ , and last but not least
+ <a href="https://aws.amazon.com/">
+  Amazon Web Services
+ </a>
+ . It also happened to be a game. I wasn't exactly sure about what I was creating when I got started - but the end result was an idea. That idea was of completely synchronous, unhackable games, built on html5 canvas'. The state (collision and physics) would be handled by the server, and the client would simply report the user inputs.
+</p>
+<p>
+ But this blog is about what I learned in finding that idea. In the order I learned it-ish.
+</p>
+<p>
+ I knew I was going to start with the canvas - because the canvas is cool. I also sort of started with my webserver because for some sadistic reason I enjoy modifying local files and checking how they run/look as served by the server (instead of simply dropping them into a browser). This wasn't such a great approach I learned later, but it did work out since there really weren't many pages needed for Starslam. Lastly I worked out authentication and user state, as well as game mechanics - and I was a real idiot to wait on these.
+</p>
+<p>
+ So.
+ <a href="https://developer.mozilla.org/en-US/docs/HTML/Canvas">
+  The Html5 Canvas
+ </a>
+ . The canvas has been around for quite some time - longer than I have been a developer (currently in 2014), and yet so few people seem to dive into them - probably since they don't make a huge deal in corporate biz logic. Fewer still seem to understand much about their basic 2D graphics, although there are some useful scraps in most google search resources. For me I found I wasn't all that interested in a lot of the functionality, as I could do what I wanted with some very simple canvas tools.
+</p>
+<p>
+ The trick for me was remembering the
+ <a href="http://en.wikipedia.org/wiki/Identity_matrix">
+  identity matrix
+ </a>
+ and the
+ <a href="en.wikipedia.org/wiki/Rotation_matrix">
+  rotation matrix
+ </a>
+ . In the world of canvas, you have the power to transform your sense of the world relative to a 3x3 matrix. This is much like turning your sense of the world upside-down -or any other angle- and continuing working, but relative to what you now see. You might wonder why a 3x3 matrix is involved in a 2 dimensional canvas, and you aren't crazy. The reason is that a 2D canvas is a subset of 3D (naturally). In the
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#setTransform()">
+  api's setTransform function
+ </a>
+ , the bottom row of the 3x3 matrix is ignored, and the rightmost column of the 3x3 matrix acts as an offset for the context:
+ <br />
+ <pre>
+  1 0 1    
+	0 1 1 -&gt; identity matrix with offset X+1 and Y+1, 
+	0 0 1    setTransform(1,0,0,1,1,1)
+ </pre>
+ <pre>
+  a b e
+	c d f -&gt; making sense of the above : setTransform(a,b,c,d,e,f) - this guy  
+	0 0 1    ignores the bottom row
+ </pre>
+ <br />
+ Then, I would draw something onto a second canvas using
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#beginPath()">
+  beginPath
+ </a>
+ ,
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#closePath()">
+  closePath
+ </a>
+ ,
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#stroke()">
+  stroke
+ </a>
+ , and
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#fill()">
+  fill
+ </a>
+ , subsequently using
+ <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D#drawImage()">
+  drawImage
+ </a>
+ to draw that image onto the display canvas. I found out it was easy conceptually and
+ <a href="http://www.kevs3d.co.uk/dev/asteroidsbench/" title="I admit people hate on drawImage some, but I found it perfectly capable">
+  not so bad
+ </a>
+ speedwise. The source is
+ <a href="https://github.com/Sammons/Angle-Engine">
+  on github
+ </a>
+ if you want to take a closer look.
+</p>
+<p>
+ Node.js routing &amp; state management. I used two servers to handle everything - 1 for the static html, and 1 for the websockets and game state. There wasn't anything too special about what I was doing here, but it was quite a learning experience in how not to organize things. I did not encapsulate functionality well, and I did not plan out my states very well either, so the result was buggy at best. I don't regret doing it the way I did though because I think everyone needs to run into their own messes every now and then. I also used
+ <a href="http://passportjs.org/guide/oauth/">
+  oAuth
+ </a>
+ without learning how it worked first.... The moral of the story here is that a lack of planning leads to time-waste in debugging and
+ <a href="http://en.wikipedia.org/wiki/Mental_confusion" title="note the uncertainty part">
+  confusion
+ </a>
+ later.
+</p>
+<p>
+ Game stuff. I never really programmed physics, but I did program movement controllers and collision events. I handled collision on a tick by tick basis, where a 500x500 matrix held each pixel in the game, and an object owned pixels on the grid or attempted to take them which would consequently result in a collision when a pixel was taken. This was slow and ugly, but it worked. Then the user events came to be put into a queue which eventually affected velocity/accel/firing properties of the user. This was processed each game-tick (approx 40ms interval).
+</p>
+<p>
+ I wish I could have kept this on AWS eternally, but alas, that costs money. I also learned a lot about domain name pointing, working behind a load balancer on aws, and getting an SSL cert. Each of these deserves their own blogs, and needs explaining I can't find a link for.
+</p>
+<p>
+ I hope this blog was useful. If you found a mistake please
+ <a href="mailto:bsammnz@gmail.com">
+  email me
+ </a>
+ , also go for it if you would like something added.
+</p>
+</content>
+
+			
+			<hr>
+			<footer>Page By <a itemprop="author" itemtype="http://schema.org/Person" href="https://plus.google.com/+BenSammons?rel=author">Ben Sammons 2014</a>, derived from Phil Hagelberg's <a href="//technomancy.us">Technomancy</a> design.<br>  
+					Looking for more?
+					[	<a href="//devrecord.com/list"> All</a> | 
+						<a href="//sammonsben.com/resume.pdf">Résumé</a> |
+						<a href="http://github.com/Sammons">Projects</a>
+					]</footer>
+				</div>
+
+
+
+		</div>
+		</body>
+		</html>
