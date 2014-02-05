@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ben Sammons</title>
+	<style type="text/css">
+	body {
+		padding :0px;
+		padding-bottom:100px;
+		margin: 0px;
+		background: rgba(50,50,50,1);
+	}
+	body a {
+		text-decoration: none;
+	}
+	#header{
+		margin-top: 0px;
+		/*background-color: rgba(210,210,210,0.8);*/
+		width: 100%;
+		position: fixed;
+		top:0px;
+		z-index: -1;
+	  	background-image:
+	  	         linear-gradient(to bottom,
+	  	          rgba(146,146,146,1),
+	  	          rgba(146,146,146,1),
+	  	          rgba(146,146,146,1),
+	  	          rgba(146,146,146,1),
+	  	          rgba(152,152,152,0.9),
+	  	          rgba(160,160,160,0.8),
+	  	          rgba(160,160,160,0.8),
+	  	          rgba(160,160,160,0.8),
+	  	          rgba(200,200,200,0));
+	}
+	#header div {
+		margin: auto;
+		width: 86%;
+	}
+	#content {
+		width: 100%;
+		height: 0%;
+		margin-left:auto;
+		margin-top: 100px;
+		z-index: -10;
+
+	}
+	#footer {
+		z-index: -2;
+	  	background-image:
+	         linear-gradient(to top,
+	          rgba(142,142,142,0.6),
+	          rgba(142,142,142,0.6),
+	          rgba(148,148,148,0.6),
+	          rgba(190,190,190,0));
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+		padding-left:7%;
+	}
+	#contact-info {
+
+	}
+	#contact-info ul {
+		list-style: none;
+	}
+	.banded {
+		padding: 8px 0px 8px 0px;
+		background: rgba(145,145,145,1);		
+	}
+	.white {
+		color: white;
+	}
+	.black {
+		color: black;
+	}
+	.standard {
+		color: rgba(20,20,20,0.7);
+	}
+	.wide {
+		padding: 0px 7% 0px 7%;
+	}
+	.element {
+		display: block;
+		min-width: 200px;
+		min-height: 200px;
+		max-width: 300px;
+		padding: 10px;
+		margin: 15px;
+		float: left;
+		z-index: 1;
+		border-radius: 8px;
+		border: 2px solid rgba(50,50,50,0.2);
+		box-shadow: 4px 8px rgba(20,20,20,0.4);
+	}
+	.element:hover {
+		border: 2px solid transparent;
+	}
+	#google_ {
+		background-color:rgb(240,240,240);
+	}
+	#google_:hover {
+		background-color: rgb(235,235,235);
+	}
+	</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		function getLeastIndex(array) {
+			var least = 0;
+			for (var i = 1; i < array.length; i++) {
+				if (array[least] > array[i]) least = i;
+			}
+			return least;
+		}
+
+		function organize(size) {
+			//if ($(window).width() > 1250) {
+				var blocks = $(".element").sort(function(a,b){
+					return $(a).width() < $(b).width();
+				});
+				var counter = 0;
+				var four = [];
+				var heights = [];
+				var x = 0;		
+				blocks.each(function(index,element){
+					if (counter  < size) {
+						var offset = $(element).offset();
+						if (counter == 0) {
+							$(element).css({
+								"position":"absolute",
+								"left": offset.left,
+								"top": offset.top,
+								"z-index":"1"
+							});
+						} else {
+							$(element).css({
+								"position":"absolute",
+								"left": $(four[counter-1]).offset().left+$(four[counter-1]).width()+40,
+								"top": offset.top,
+								"z-index":"1"
+							});
+						}
+						heights.push($(element).height());
+						four.push(element);
+					if (counter == size-1 && size > 1) {
+						var marg = $(four[counter-1]).offset().left+$(four[counter-1]).width()+40+$(element).width();
+						marg = ($(document).width()-marg)/2-50;
+						for (var i = 0; i < four.length ; i++) {
+							var newO = $(four[i]).css("left").replace("px","")/1;
+							console.log(marg+newO)
+							$(four[i]).css("left",newO+=marg);
+						}
+					}
+					counter++;
+					}
+					else {
+						var ind = getLeastIndex(heights);
+						indexPrev = (ind%size)-1;
+						if (indexPrev < 0) indexPrev=0;
+						$(element).css({
+							"position":"absolute",
+							"left": (indexPrev ==0 ? $(four[ind%size]).offset().left : $(four[indexPrev]).offset().left+$(four[indexPrev]).width()+ 40),
+							"top":$(four[ind%size]).offset().top+$(four[ind%size]).height()+40,
+							"z-index":"1"
+						});
+						heights[ind%size] += $(element).height();
+						four[ind%size] = element;
+					}
+				});
+				
+				blocks.each(function(index,element){
+					$(element).css("top",$(element).offset().top-3000);
+				});
+				var time = 0;
+				blocks.each(function(index,element){
+					$(element).animate({
+						"top":$(element).offset().top+3000
+					},time);
+					time+=500;
+				});
+				$("#spanner").css({
+					"z-index":"-4",
+					"height":$(document).height()+100
+				});
+				//$("#content").css("height",$(document).height()+200);
+			// } else {
+			// 	$(".element").css("position","static");	
+			// }
+		}
+
+		organize(Math.floor($(window).width()/350));
+		$(window).resize(function(){
+			window.top.location = window.top.location;
+		})
+
+		function checkOnline(link,callback) {
+			var success = false;
+			$.get(link,function(data) {
+			console.log("success");
+			console.log(data)});
+			$.getScript(link,function(){
+				var p = new RegExp(link);
+				if (p.test(this.url)) success = true;
+				$($("script")[0]).remove();
+			});
+			setTimeout(function(){
+				callback(success);
+			},1500);
+		}
+		$(".status").each(function(index,element){
+			var link = $(element).parent().find(".main-link");
+			var stat = $(element).parent().find(".status");
+			link = $(link).attr('href');
+			checkOnline(link,function(bln){
+				$(stat).css({
+					"width":"15px",
+					"height":"15px",
+					"border-radius":"10px",
+					"display": "inline-block"
+				});
+				if (bln) {
+					$(stat).css("background-color","green");
+				} else {
+					$(stat).css("background-color","red");
+				}
+			});
+		});
+	});
+	</script>
+</head>
+<body>
+	<div id="header">
+		<div class="black span-col">
+			<h2><i>Ben Sammons</i></h2>
+			<h3>Since every programmer should really have a fully biased site that acts as an external reference to their works - here is mine</h3>
+		</div>
+	</div>
+	<div id="content">
+		<div class="element banded">
+			<h3>Notes about this page</h3>
+			<li>I am colorblind...</li>
+			<li>Developed in Chrome</li>
+			<p>Browsers I think I supported:</p>
+			<ul>
+				<li>Firefox 16+</li>
+				<li>Chrome 26.0+</li>
+				<li>IE 10+</li>
+				<li>Safari 537.27+</li>
+			</ul>
+			<h4>...and a few opinionated statements</h4>
+			<p>
+			I don't believe in spending lots of time on
+			 personal projects in backwards compatibility;
+			 new technology and methods exist to be used, and improved.</p>
+			<p>
+			I also don't believe there is a best way to do everything,
+			 but some methods are distinctively not excellent.
+			  If you notice one in any of my work please let me know -- I am open to improvements.
+			</p>
+			<p>
+			Thank you for visiting!
+			</p>
+		</div>
+		<div class="element banded">
+			<h3>Contact Ben</h3>
+			<ul>
+				<li>
+					<a href="mailto:bsammnz@gmail.com">bsammnz@gmail.com</a>
+				</li>
+				<li>
+					<a href="mailto:benjamindsammons@gmail.com">benjamindsammons@gmail.com</a>
+				</li>
+				<li>
+					<a href="mailto:bds8c7@mail.missouri.edu">bds8c7@mail.missouri.edu</a>
+				</li>
+			</ul>
+			<p>Use whichever form of communication you feel is most convenient, 24/7. If you have my contact information then it is acceptable to use it. I will do my best to respond in a timely fashion.</p>
+		</div>
+		<div class="element banded">
+			<h3>Find Ben Online</h3>
+			<ul>
+				<li><a href="https://github.com/Sammons">Github</a></li>
+				<li><a href="https://plus.google.com/u/0/+BenSammons/posts/p/pub">Google+</a></li>
+				<li><a href="https://www.facebook.com/ben.d.sammons">Facebook</a></li>
+				<li><a href="https://twitter.com/BenSammons">Twitter</a></li>
+				<li><a href="http://linkedin.com/pub/benjamin-sammons/59/bb1/228/">LinkedIn</a>
+				<li><a href="http://careers.stackoverflow.com/Sammons">Stack Overflow Careers 2.0</a></li>
+			</ul>
+
+				<iframe src="http://ghbtns.com/github-btn.html?user=Sammons&type=follow"
+			  allowtransparency="true" frameborder="0" scrolling="0" width="62" height="20"></iframe><br>
+			<!-- Place this code where you want the badge to render. -->
+			<div id="google_"style="color:white;padding:1px 1px 3px 3px;width:72px;height:14px;border-radius:3px; border:1px solid rgb(200,200,200);margin-bottom:5px;">
+			<a href="//plus.google.com/109321766184702207099?prsrc=3"
+			   rel="publisher" target="_top" style="text-decoration:none;display:inline-block;color:#333;text-align:center; font:13px/16px arial,sans-serif;white-space:nowrap;">
+			<span style="font-size:10px;display:inline-block;font-weight:bold;vertical-align:top;margin-right:5px; margin-top:0px;">Follow on</span>
+			<img src="http://ssl.gstatic.com/images/icons/gplus-16.png" alt="Google+" style="border:0;width:13px;height:13px;"/>
+			</a></div>
+				<a href="https://twitter.com/BenSammons" class="twitter-follow-button" data-show-count="false">Follow @BenSammons</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+				<div id="fb-root"></div>
+
+			<p>Follow me?</p>
+		</div>
+		<div class="element banded">
+			<h3>Ben's Blog</h3>
+			<div class="status"></div>
+			<a class="main-link" href="http://devrecord.com">devrecord</a>
+			<p>We all need to polish our writing skills, rant, and share our wisdom and experiences with the world.</p>
+		</div>
+		<div class="element banded">
+			<h3>Winkeys</h3>
+			<p>C++ project that allows a Windows user to group windows and hide/restore them by "group". Provides a similar functionality to virtual desktops. Also my first dive into C++.</p>
+			<p>Thank you to David Logsdon for helping clean this code after I got it working so it looks less like something written in the 80's.</p>
+			<a href="https://github.com/Sammons/Winkeys">Source</a>
+		</div>
+		<div class="element banded">
+			<h3>Starslam</h3>
+			<div class="status"></div>
+			<a class="main-link"href="http://starslam.sammonsben.com">starslam on aws</a>
+			<p>I decided to build a game from scratch using a node.js backend. I wrote all of the physics/collision/rendering logic and put it into a gameserver that communicated with the client via websockets. Non-game functionality is handled securely by a separate node.js server.</p>
+			<p><strong>I host this project on aws, and it is not always online.</strong></p>
+			<a href="https://github.com/Sammons/Angle">Static Server Source</a><br>
+			<a href="https://github.com/Sammons/Angle-Engine">Game Server Source</a>
+			<p>Note: perpetually under developement</p>
+		</div>
+		<div class="element banded">
+			<h3>WordFlip</h3>
+			<p>I built a basic Windows 8 app that takes a string from the user, calculates permutations of lengths 2 to n, and then matches those words against a .txt dictionary I found online. I built this pretty early on and it needs to be updated to work on the latest updated version of Windows.</p>
+			<p>To check it out just search the Windows App store for WordFlip</p>
+			<a href="https://github.com/Sammons/WordFlip">Source</a>
+		</div>
+		<div class="element banded">
+			<h3>Sqlistory</h3>
+			<p>
+				I roughed this project out but haven't gone much further with it. Using a node.js backend I have the user upload their local chrome history file. Since its a sqlite3 database I was easily able to create an interface for the user to write sql statements against their chrome history in its raw form.
+			</p>
+			<a href="https://github.com/Sammons/Sqlistory">Source</a>
+		</div>
+		<div class="element banded">
+			<h3>Resume</h3>
+			<p>
+				This is a pruned version of my resume -- personal information such as home address and phone have been removed.
+			</p>
+			<a href="http://sammonsben.com/resume.pdf">Download PDF</a>
+		</div>
+		<div id="spanner" style="height:100px; width:100%;float:left;"></div>
+	</div>
+	<div id="footer">
+		<p>Page by Ben Sammons 2013</p>
+	</div>
+</body>
+</html>

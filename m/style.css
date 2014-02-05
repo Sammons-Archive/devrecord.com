@@ -1,0 +1,260 @@
+@font-face {
+ font-family: Terminator;
+ src: url(Terminat.ttf);
+}
+body,div,a,h1,h2,h3,img {
+	padding: 0px;
+	margin: 0px;
+}
+h1 {
+	font-size: 48px;
+}
+body,html {
+	height: 100%;
+}
+
+.indented {
+	text-indent: 3em;
+}
+
+.header {
+ width: 60%;
+ min-height: 15px;
+ margin-left: 20%;
+ margin-bottom: 5%;
+ padding-top: 5%;
+ min-height: 20px;
+}
+
+.footer {
+ opacity: 0.4;
+ width: 200px;
+ position: fixed;
+ bottom: 0px;
+ margin-left: 20%;
+ background: rgba(220,200,180,0.3);
+}
+
+.content {
+ width: 60%;
+ height: 100%;
+ margin-left: 20%;
+ text-align: justify;
+ line-height: 28px;
+ vertical-align: middle;
+}
+
+.container {
+  font-family: Terminator;
+  min-height: 100%;
+}
+
+
+.silently {
+  opacity: 0.1;
+  z-index: 15;
+}
+
+.resolute {
+  position: fixed;
+  font-size: 64px;
+  font-family: Terminator;
+  padding: 8px;
+}
+
+@media all and (max-width: 800px) {
+	.resolute {
+		visibility: hidden;
+	}
+	.magic-link {
+		font-size: 16px;
+	}
+}
+
+.magic-link {
+	text-decoration: none;
+	font-size: 36px;
+	overflow: hidden;
+	position: absolute;
+	left: 65%;
+	top: 80%;
+}
+.magic-link img {
+	width: 50px;
+}
+
+.magic-link:hover img {
+	animation-duration: 1s;	
+	animation-delay: 0s;
+	animation-name: spin;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-duration: 1s;	
+	-webkit-animation-delay: 0s;
+	-webkit-animation-name: spin;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes spin {
+	0% {-webkit-transform: rotateY(0deg);}
+	100% {-webkit-transform: rotateY(720deg);}
+}
+@keyframes spin {
+	0% {transform: rotateY(0deg);}
+	100% {transform: rotateY(720deg);}
+}
+
+#static-back-text-1 {
+	top: 14.5%;
+	right: 13%;
+}
+#static-back-text-2 {
+	bottom: 14.5%;
+	left: 13%;
+}
+
+#container-1 {
+		background: linear-gradient(to right,
+		red,
+		rgb(255,200,155),
+		rgb(200,200,200),
+		rgb(200,200,200),
+		rgb(155,200,255),
+		blue);
+}
+#container-2 {
+	background: radial-gradient(circle,
+		purple,green,blue,
+		red,green,blue,
+		red,green,blue,
+		red,green,blue,
+		red,green,blue,
+		red,green,blue);
+}
+
+#container-2:target #comment {
+	visibility: visible;
+}
+
+#comment {
+	visibility: hidden;
+	left: 50%;
+	bottom: -40%;
+position: absolute;
+	animation-duration: 4s;	
+	animation-delay: 0s;
+	animation-name: run;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-duration: 4s;	
+	-webkit-animation-delay: 0s;
+	-webkit-animation-name: run;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+#comment a {
+	color: green;
+	text-decoration: none;
+	font-size: 72pt;
+	position: absolute;
+	animation-duration: 3s;	
+	animation-delay: 0s;
+	animation-name: spin;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-duration: 3s;	
+	-webkit-animation-delay: 0s;
+	-webkit-animation-name: spin;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+@-webkit-keyframes run {
+	0% {-webkit-transform: rotateZ(0deg); }
+	100% {-webkit-transform: rotateZ(720deg);}
+}
+@keyframes run {
+	0% {transform: moz-rotateZ(0deg); transform: rotateZ(0deg);}
+	100% {transform: moz-rotateZ(720deg); transform: rotateZ(720deg);}
+}
+
+/* modal stuff */
+
+#modal {
+ left:-50%;
+ margin:-250px 0 0 -40%;
+ opacity: 0;
+ position:absolute;
+ bottom: 20%;
+ visibility: hidden;
+ width:80%;
+ box-shadow:0 3px 7px rgba(0,0,0,.25);
+ box-sizing:border-box;
+ transition: all 0.7s ease-in-out;
+ -moz-transition: all 0.7s ease-in-out;
+ -webkit-transition: all 0.7s ease-in-out;
+}
+
+#modal:target {
+ z-index: 25;
+ left: 50%;
+ opacity: 1;
+ top:155%;
+ visibility: visible;
+}
+
+.modal-content {
+
+	width: 350px;
+	min-height: 300px;
+	margin: auto;
+	background: rgba(125,125,125,0.7);
+	padding: 120px 20px 0px 20px;
+	border-radius: 400px;
+
+}
+
+.modal-content input, .modal-content textarea {
+	color: white;
+	border: 1px solid rgba(100,100,100,0.9);
+	width: 90%;
+	height: 30px;
+	margin: 8px 0px 4px 0px;
+	padding: 4px;
+	border-radius: 2px;
+	box-shadow: 2px -2px green;
+	background-color: transparent;
+	display: inline-block;
+}
+
+.modal-content input[type=submit] {
+	background-color: rgba(100,100,100,0.9);;
+}
+
+.modal-content input:hover,.modal-content textarea:hover  {
+	box-shadow: 2px 2px blue;
+}
+
+.modal-content a {
+	color: blue;
+	font-size: 24pt;
+	width: 100%;
+	margin-top: 30px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 2px 3px green;
+	letter-spacing: 6px;
+}
+
+#modal .overlay {
+ background-color: #000;
+ background: rgba(0,0,0,.7);
+ height: 100%;
+ left: 0;
+ position: fixed;
+ top: 0;
+ width: 100%;
+ z-index: -1;
+}
